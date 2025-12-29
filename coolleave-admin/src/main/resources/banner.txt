@@ -1,0 +1,2 @@
+Application Version: ${coolleave.version}
+Spring Boot Version: ${spring-boot.version}
