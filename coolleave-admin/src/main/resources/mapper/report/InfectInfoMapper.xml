@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolleave.report.mapper.InfectInfoMapper">
+    
+    <resultMap type="InfectInfo" id="InfectInfoResult">
+        <result property="infectId"    column="infect_id"    />
+        <result property="infectCode"    column="infect_code"    />
+        <result property="infectName"    column="infect_name"    />
+        <result property="infectLevel"    column="infect_level"    />
+    </resultMap>
+
+    <sql id="selectInfectInfoVo">
+        select infect_id, infect_code, infect_name, infect_level from infect_info
+    </sql>
+
+    <select id="selectInfectInfoList" parameterType="InfectInfo" resultMap="InfectInfoResult">
+        <include refid="selectInfectInfoVo"/>
+        <where>  
+            <if test="infectCode != null  and infectCode != ''"> and infect_code = #{infectCode}</if>
+            <if test="infectName != null  and infectName != ''"> and infect_name like concat('%', #{infectName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectInfectInfoByInfectId" parameterType="Long" resultMap="InfectInfoResult">
+        <include refid="selectInfectInfoVo"/>
+        where infect_id = #{infectId}
+    </select>
+
+    <insert id="insertInfectInfo" parameterType="InfectInfo" useGeneratedKeys="true" keyProperty="infectId">
+        insert into infect_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="infectCode != null and infectCode != ''">infect_code,</if>
+            <if test="infectName != null and infectName != ''">infect_name,</if>
+            <if test="infectLevel != null">infect_level,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="infectCode != null and infectCode != ''">#{infectCode},</if>
+            <if test="infectName != null and infectName != ''">#{infectName},</if>
+            <if test="infectLevel != null">#{infectLevel},</if>
+         </trim>
+    </insert>
+
+    <update id="updateInfectInfo" parameterType="InfectInfo">
+        update infect_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="infectCode != null and infectCode != ''">infect_code = #{infectCode},</if>
+            <if test="infectName != null and infectName != ''">infect_name = #{infectName},</if>
+            <if test="infectLevel != null">infect_level = #{infectLevel},</if>
+        </trim>
+        where infect_id = #{infectId}
+    </update>
+
+    <delete id="deleteInfectInfoByInfectId" parameterType="Long">
+        delete from infect_info where infect_id = #{infectId}
+    </delete>
+
+    <delete id="deleteInfectInfoByInfectIds" parameterType="String">
+        delete from infect_info where infect_id in 
+        <foreach item="infectId" collection="array" open="(" separator="," close=")">
+            #{infectId}
+        </foreach>
+    </delete>
+</mapper>
