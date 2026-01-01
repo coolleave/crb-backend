@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolleave.report.mapper.CaseVerifyInvestigateMapper">
+    
+    <resultMap type="CaseVerifyInvestigate" id="CaseVerifyInvestigateResult">
+        <result property="verifyId"    column="verify_id"    />
+        <result property="caseId"    column="case_id"    />
+        <result property="verifyStaffId"    column="verify_staff_id"    />
+        <result property="verifyDatetime"    column="verify_datetime"    />
+        <result property="verifyResult"    column="verify_result"    />
+        <result property="verifyBasis"    column="verify_basis"    />
+        <result property="surveyDatetime"    column="survey_datetime"    />
+        <result property="surveyContent"    column="survey_content"    />
+        <result property="surveyStaff"    column="survey_staff"    />
+        <result property="handleMeasure"    column="handle_measure"    />
+        <result property="handleStatus"    column="handle_status"    />
+        <result property="handleDatetime"    column="handle_datetime"    />
+        <result property="handleResult"    column="handle_result"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCaseVerifyInvestigateVo">
+        select verify_id, case_id, verify_staff_id, verify_datetime, verify_result, verify_basis, survey_datetime, survey_content, survey_staff, handle_measure, handle_status, handle_datetime, handle_result, remark, create_time, update_time from case_verify_investigate
+    </sql>
+
+    <select id="selectCaseVerifyInvestigateList" parameterType="CaseVerifyInvestigate" resultMap="CaseVerifyInvestigateResult">
+        <include refid="selectCaseVerifyInvestigateVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectCaseVerifyInvestigateByVerifyId" parameterType="Long" resultMap="CaseVerifyInvestigateResult">
+        <include refid="selectCaseVerifyInvestigateVo"/>
+        where verify_id = #{verifyId}
+    </select>
+
+    <insert id="insertCaseVerifyInvestigate" parameterType="CaseVerifyInvestigate" useGeneratedKeys="true" keyProperty="verifyId">
+        insert into case_verify_investigate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="caseId != null">case_id,</if>
+            <if test="verifyStaffId != null">verify_staff_id,</if>
+            <if test="verifyDatetime != null">verify_datetime,</if>
+            <if test="verifyResult != null">verify_result,</if>
+            <if test="verifyBasis != null">verify_basis,</if>
+            <if test="surveyDatetime != null">survey_datetime,</if>
+            <if test="surveyContent != null">survey_content,</if>
+            <if test="surveyStaff != null">survey_staff,</if>
+            <if test="handleMeasure != null">handle_measure,</if>
+            <if test="handleStatus != null">handle_status,</if>
+            <if test="handleDatetime != null">handle_datetime,</if>
+            <if test="handleResult != null">handle_result,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="caseId != null">#{caseId},</if>
+            <if test="verifyStaffId != null">#{verifyStaffId},</if>
+            <if test="verifyDatetime != null">#{verifyDatetime},</if>
+            <if test="verifyResult != null">#{verifyResult},</if>
+            <if test="verifyBasis != null">#{verifyBasis},</if>
+            <if test="surveyDatetime != null">#{surveyDatetime},</if>
+            <if test="surveyContent != null">#{surveyContent},</if>
+            <if test="surveyStaff != null">#{surveyStaff},</if>
+            <if test="handleMeasure != null">#{handleMeasure},</if>
+            <if test="handleStatus != null">#{handleStatus},</if>
+            <if test="handleDatetime != null">#{handleDatetime},</if>
+            <if test="handleResult != null">#{handleResult},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCaseVerifyInvestigate" parameterType="CaseVerifyInvestigate">
+        update case_verify_investigate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="caseId != null">case_id = #{caseId},</if>
+            <if test="verifyStaffId != null">verify_staff_id = #{verifyStaffId},</if>
+            <if test="verifyDatetime != null">verify_datetime = #{verifyDatetime},</if>
+            <if test="verifyResult != null">verify_result = #{verifyResult},</if>
+            <if test="verifyBasis != null">verify_basis = #{verifyBasis},</if>
+            <if test="surveyDatetime != null">survey_datetime = #{surveyDatetime},</if>
+            <if test="surveyContent != null">survey_content = #{surveyContent},</if>
+            <if test="surveyStaff != null">survey_staff = #{surveyStaff},</if>
+            <if test="handleMeasure != null">handle_measure = #{handleMeasure},</if>
+            <if test="handleStatus != null">handle_status = #{handleStatus},</if>
+            <if test="handleDatetime != null">handle_datetime = #{handleDatetime},</if>
+            <if test="handleResult != null">handle_result = #{handleResult},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where verify_id = #{verifyId}
+    </update>
+
+    <delete id="deleteCaseVerifyInvestigateByVerifyId" parameterType="Long">
+        delete from case_verify_investigate where verify_id = #{verifyId}
+    </delete>
+
+    <delete id="deleteCaseVerifyInvestigateByVerifyIds" parameterType="String">
+        delete from case_verify_investigate where verify_id in 
+        <foreach item="verifyId" collection="array" open="(" separator="," close=")">
+            #{verifyId}
+        </foreach>
+    </delete>
+</mapper>

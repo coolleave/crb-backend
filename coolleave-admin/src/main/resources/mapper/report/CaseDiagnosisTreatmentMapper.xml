@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolleave.report.mapper.CaseDiagnosisTreatmentMapper">
+    
+    <resultMap type="CaseDiagnosisTreatment" id="CaseDiagnosisTreatmentResult">
+        <result property="diagId"    column="diag_id"    />
+        <result property="caseId"    column="case_id"    />
+        <result property="diagDoctor"    column="diag_doctor"    />
+        <result property="diagDatetime"    column="diag_datetime"    />
+        <result property="diagResult"    column="diag_result"    />
+        <result property="treatmentPlan"    column="treatment_plan"    />
+        <result property="isIsolated"    column="is_isolated"    />
+        <result property="isolateAddress"    column="isolate_address"    />
+        <result property="isolateStart"    column="isolate_start"    />
+        <result property="isolateEnd"    column="isolate_end"    />
+        <result property="medication"    column="medication"    />
+        <result property="checkItems"    column="check_items"    />
+        <result property="checkResult"    column="check_result"    />
+        <result property="cureStatus"    column="cure_status"    />
+        <result property="cureDatetime"    column="cure_datetime"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCaseDiagnosisTreatmentVo">
+        select diag_id, case_id, diag_doctor, diag_datetime, diag_result, treatment_plan, is_isolated, isolate_address, isolate_start, isolate_end, medication, check_items, check_result, cure_status, cure_datetime, create_time, update_time from case_diagnosis_treatment
+    </sql>
+
+    <select id="selectCaseDiagnosisTreatmentList" parameterType="CaseDiagnosisTreatment" resultMap="CaseDiagnosisTreatmentResult">
+        <include refid="selectCaseDiagnosisTreatmentVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectCaseDiagnosisTreatmentByDiagId" parameterType="Long" resultMap="CaseDiagnosisTreatmentResult">
+        <include refid="selectCaseDiagnosisTreatmentVo"/>
+        where diag_id = #{diagId}
+    </select>
+
+    <insert id="insertCaseDiagnosisTreatment" parameterType="CaseDiagnosisTreatment" useGeneratedKeys="true" keyProperty="diagId">
+        insert into case_diagnosis_treatment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="caseId != null">case_id,</if>
+            <if test="diagDoctor != null and diagDoctor != ''">diag_doctor,</if>
+            <if test="diagDatetime != null">diag_datetime,</if>
+            <if test="diagResult != null and diagResult != ''">diag_result,</if>
+            <if test="treatmentPlan != null and treatmentPlan != ''">treatment_plan,</if>
+            <if test="isIsolated != null">is_isolated,</if>
+            <if test="isolateAddress != null">isolate_address,</if>
+            <if test="isolateStart != null">isolate_start,</if>
+            <if test="isolateEnd != null">isolate_end,</if>
+            <if test="medication != null">medication,</if>
+            <if test="checkItems != null">check_items,</if>
+            <if test="checkResult != null">check_result,</if>
+            <if test="cureStatus != null">cure_status,</if>
+            <if test="cureDatetime != null">cure_datetime,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="caseId != null">#{caseId},</if>
+            <if test="diagDoctor != null and diagDoctor != ''">#{diagDoctor},</if>
+            <if test="diagDatetime != null">#{diagDatetime},</if>
+            <if test="diagResult != null and diagResult != ''">#{diagResult},</if>
+            <if test="treatmentPlan != null and treatmentPlan != ''">#{treatmentPlan},</if>
+            <if test="isIsolated != null">#{isIsolated},</if>
+            <if test="isolateAddress != null">#{isolateAddress},</if>
+            <if test="isolateStart != null">#{isolateStart},</if>
+            <if test="isolateEnd != null">#{isolateEnd},</if>
+            <if test="medication != null">#{medication},</if>
+            <if test="checkItems != null">#{checkItems},</if>
+            <if test="checkResult != null">#{checkResult},</if>
+            <if test="cureStatus != null">#{cureStatus},</if>
+            <if test="cureDatetime != null">#{cureDatetime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCaseDiagnosisTreatment" parameterType="CaseDiagnosisTreatment">
+        update case_diagnosis_treatment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="caseId != null">case_id = #{caseId},</if>
+            <if test="diagDoctor != null and diagDoctor != ''">diag_doctor = #{diagDoctor},</if>
+            <if test="diagDatetime != null">diag_datetime = #{diagDatetime},</if>
+            <if test="diagResult != null and diagResult != ''">diag_result = #{diagResult},</if>
+            <if test="treatmentPlan != null and treatmentPlan != ''">treatment_plan = #{treatmentPlan},</if>
+            <if test="isIsolated != null">is_isolated = #{isIsolated},</if>
+            <if test="isolateAddress != null">isolate_address = #{isolateAddress},</if>
+            <if test="isolateStart != null">isolate_start = #{isolateStart},</if>
+            <if test="isolateEnd != null">isolate_end = #{isolateEnd},</if>
+            <if test="medication != null">medication = #{medication},</if>
+            <if test="checkItems != null">check_items = #{checkItems},</if>
+            <if test="checkResult != null">check_result = #{checkResult},</if>
+            <if test="cureStatus != null">cure_status = #{cureStatus},</if>
+            <if test="cureDatetime != null">cure_datetime = #{cureDatetime},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where diag_id = #{diagId}
+    </update>
+
+    <delete id="deleteCaseDiagnosisTreatmentByDiagId" parameterType="Long">
+        delete from case_diagnosis_treatment where diag_id = #{diagId}
+    </delete>
+
+    <delete id="deleteCaseDiagnosisTreatmentByDiagIds" parameterType="String">
+        delete from case_diagnosis_treatment where diag_id in 
+        <foreach item="diagId" collection="array" open="(" separator="," close=")">
+            #{diagId}
+        </foreach>
+    </delete>
+</mapper>

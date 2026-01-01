@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolleave.report.mapper.CaseBaseMapper">
+    
+    <resultMap type="CaseBase" id="CaseBaseResult">
+        <result property="caseId"    column="case_id"    />
+        <result property="caseCode"    column="case_code"    />
+        <result property="infectId"    column="infect_id"    />
+        <result property="reportType"    column="report_type"    />
+        <result property="patientName"    column="patient_name"    />
+        <result property="patientGender"    column="patient_gender"    />
+        <result property="patientAge"    column="patient_age"    />
+        <result property="patientIdcard"    column="patient_idcard"    />
+        <result property="patientPhone"    column="patient_phone"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="district"    column="district"    />
+        <result property="detailAddress"    column="detail_address"    />
+        <result property="onsetDatetime"    column="onset_datetime"    />
+        <result property="reportDatetime"    column="report_datetime"    />
+        <result property="reporterId"    column="reporter_id"    />
+        <result property="reportDeptId"    column="report_dept_id"    />
+        <result property="caseStatus"    column="case_status"    />
+        <result property="hospitalWard"    column="hospital_ward"    />
+        <result property="hospitalBed"    column="hospital_bed"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCaseBaseVo">
+        select case_id, case_code, infect_id, report_type, patient_name, patient_gender, patient_age, patient_idcard, patient_phone, province, city, district, detail_address, onset_datetime, report_datetime, reporter_id, report_dept_id, case_status, hospital_ward, hospital_bed, create_time, update_time from case_base
+    </sql>
+
+    <select id="selectCaseBaseList" parameterType="CaseBase" resultMap="CaseBaseResult">
+        <include refid="selectCaseBaseVo"/>
+        <where>  
+            <if test="caseCode != null  and caseCode != ''"> and case_code = #{caseCode}</if>
+            <if test="infectId != null "> and infect_id = #{infectId}</if>
+            <if test="reportType != null "> and report_type = #{reportType}</if>
+            <if test="patientName != null  and patientName != ''"> and patient_name like concat('%', #{patientName}, '%')</if>
+            <if test="patientGender != null "> and patient_gender = #{patientGender}</if>
+            <if test="patientAge != null "> and patient_age = #{patientAge}</if>
+            <if test="patientIdcard != null  and patientIdcard != ''"> and patient_idcard = #{patientIdcard}</if>
+            <if test="patientPhone != null  and patientPhone != ''"> and patient_phone = #{patientPhone}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="district != null  and district != ''"> and district = #{district}</if>
+            <if test="detailAddress != null  and detailAddress != ''"> and detail_address = #{detailAddress}</if>
+            <if test="onsetDatetime != null "> and onset_datetime = #{onsetDatetime}</if>
+            <if test="reportDatetime != null "> and report_datetime = #{reportDatetime}</if>
+            <if test="reporterId != null "> and reporter_id = #{reporterId}</if>
+            <if test="reportDeptId != null "> and report_dept_id = #{reportDeptId}</if>
+            <if test="caseStatus != null "> and case_status = #{caseStatus}</if>
+            <if test="hospitalWard != null  and hospitalWard != ''"> and hospital_ward = #{hospitalWard}</if>
+            <if test="hospitalBed != null  and hospitalBed != ''"> and hospital_bed = #{hospitalBed}</if>
+        </where>
+    </select>
+    
+    <select id="selectCaseBaseByCaseId" parameterType="Long" resultMap="CaseBaseResult">
+        <include refid="selectCaseBaseVo"/>
+        where case_id = #{caseId}
+    </select>
+
+    <insert id="insertCaseBase" parameterType="CaseBase" useGeneratedKeys="true" keyProperty="caseId">
+        insert into case_base
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="caseCode != null and caseCode != ''">case_code,</if>
+            <if test="infectId != null">infect_id,</if>
+            <if test="reportType != null">report_type,</if>
+            <if test="patientName != null and patientName != ''">patient_name,</if>
+            <if test="patientGender != null">patient_gender,</if>
+            <if test="patientAge != null">patient_age,</if>
+            <if test="patientIdcard != null">patient_idcard,</if>
+            <if test="patientPhone != null">patient_phone,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="district != null">district,</if>
+            <if test="detailAddress != null">detail_address,</if>
+            <if test="onsetDatetime != null">onset_datetime,</if>
+            <if test="reportDatetime != null">report_datetime,</if>
+            <if test="reporterId != null">reporter_id,</if>
+            <if test="reportDeptId != null">report_dept_id,</if>
+            <if test="caseStatus != null">case_status,</if>
+            <if test="hospitalWard != null">hospital_ward,</if>
+            <if test="hospitalBed != null">hospital_bed,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="caseCode != null and caseCode != ''">#{caseCode},</if>
+            <if test="infectId != null">#{infectId},</if>
+            <if test="reportType != null">#{reportType},</if>
+            <if test="patientName != null and patientName != ''">#{patientName},</if>
+            <if test="patientGender != null">#{patientGender},</if>
+            <if test="patientAge != null">#{patientAge},</if>
+            <if test="patientIdcard != null">#{patientIdcard},</if>
+            <if test="patientPhone != null">#{patientPhone},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="district != null">#{district},</if>
+            <if test="detailAddress != null">#{detailAddress},</if>
+            <if test="onsetDatetime != null">#{onsetDatetime},</if>
+            <if test="reportDatetime != null">#{reportDatetime},</if>
+            <if test="reporterId != null">#{reporterId},</if>
+            <if test="reportDeptId != null">#{reportDeptId},</if>
+            <if test="caseStatus != null">#{caseStatus},</if>
+            <if test="hospitalWard != null">#{hospitalWard},</if>
+            <if test="hospitalBed != null">#{hospitalBed},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCaseBase" parameterType="CaseBase">
+        update case_base
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="caseCode != null and caseCode != ''">case_code = #{caseCode},</if>
+            <if test="infectId != null">infect_id = #{infectId},</if>
+            <if test="reportType != null">report_type = #{reportType},</if>
+            <if test="patientName != null and patientName != ''">patient_name = #{patientName},</if>
+            <if test="patientGender != null">patient_gender = #{patientGender},</if>
+            <if test="patientAge != null">patient_age = #{patientAge},</if>
+            <if test="patientIdcard != null">patient_idcard = #{patientIdcard},</if>
+            <if test="patientPhone != null">patient_phone = #{patientPhone},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="district != null">district = #{district},</if>
+            <if test="detailAddress != null">detail_address = #{detailAddress},</if>
+            <if test="onsetDatetime != null">onset_datetime = #{onsetDatetime},</if>
+            <if test="reportDatetime != null">report_datetime = #{reportDatetime},</if>
+            <if test="reporterId != null">reporter_id = #{reporterId},</if>
+            <if test="reportDeptId != null">report_dept_id = #{reportDeptId},</if>
+            <if test="caseStatus != null">case_status = #{caseStatus},</if>
+            <if test="hospitalWard != null">hospital_ward = #{hospitalWard},</if>
+            <if test="hospitalBed != null">hospital_bed = #{hospitalBed},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where case_id = #{caseId}
+    </update>
+
+    <delete id="deleteCaseBaseByCaseId" parameterType="Long">
+        delete from case_base where case_id = #{caseId}
+    </delete>
+
+    <delete id="deleteCaseBaseByCaseIds" parameterType="String">
+        delete from case_base where case_id in 
+        <foreach item="caseId" collection="array" open="(" separator="," close=")">
+            #{caseId}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolleave.report.mapper.CaseTrackContactMapper">
+    
+    <resultMap type="CaseTrackContact" id="CaseTrackContactResult">
+        <result property="trackId"    column="track_id"    />
+        <result property="caseId"    column="case_id"    />
+        <result property="trackDatetime"    column="track_datetime"    />
+        <result property="trackAddress"    column="track_address"    />
+        <result property="trackType"    column="track_type"    />
+        <result property="trackDesc"    column="track_desc"    />
+        <result property="contactName"    column="contact_name"    />
+        <result property="contactRelation"    column="contact_relation"    />
+        <result property="contactIdcard"    column="contact_idcard"    />
+        <result property="contactPhone"    column="contact_phone"    />
+        <result property="contactDatetime"    column="contact_datetime"    />
+        <result property="contactAddress"    column="contact_address"    />
+        <result property="contactRisk"    column="contact_risk"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectCaseTrackContactVo">
+        select track_id, case_id, track_datetime, track_address, track_type, track_desc, contact_name, contact_relation, contact_idcard, contact_phone, contact_datetime, contact_address, contact_risk, create_time from case_track_contact
+    </sql>
+
+    <select id="selectCaseTrackContactList" parameterType="CaseTrackContact" resultMap="CaseTrackContactResult">
+        <include refid="selectCaseTrackContactVo"/>
+        <where>  
+            <if test="caseId != null "> and case_id = #{caseId}</if>
+        </where>
+    </select>
+    
+    <select id="selectCaseTrackContactByTrackId" parameterType="Long" resultMap="CaseTrackContactResult">
+        <include refid="selectCaseTrackContactVo"/>
+        where track_id = #{trackId}
+    </select>
+
+    <insert id="insertCaseTrackContact" parameterType="CaseTrackContact" useGeneratedKeys="true" keyProperty="trackId">
+        insert into case_track_contact
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="caseId != null">case_id,</if>
+            <if test="trackDatetime != null">track_datetime,</if>
+            <if test="trackAddress != null">track_address,</if>
+            <if test="trackType != null">track_type,</if>
+            <if test="trackDesc != null">track_desc,</if>
+            <if test="contactName != null">contact_name,</if>
+            <if test="contactRelation != null">contact_relation,</if>
+            <if test="contactIdcard != null">contact_idcard,</if>
+            <if test="contactPhone != null">contact_phone,</if>
+            <if test="contactDatetime != null">contact_datetime,</if>
+            <if test="contactAddress != null">contact_address,</if>
+            <if test="contactRisk != null">contact_risk,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="caseId != null">#{caseId},</if>
+            <if test="trackDatetime != null">#{trackDatetime},</if>
+            <if test="trackAddress != null">#{trackAddress},</if>
+            <if test="trackType != null">#{trackType},</if>
+            <if test="trackDesc != null">#{trackDesc},</if>
+            <if test="contactName != null">#{contactName},</if>
+            <if test="contactRelation != null">#{contactRelation},</if>
+            <if test="contactIdcard != null">#{contactIdcard},</if>
+            <if test="contactPhone != null">#{contactPhone},</if>
+            <if test="contactDatetime != null">#{contactDatetime},</if>
+            <if test="contactAddress != null">#{contactAddress},</if>
+            <if test="contactRisk != null">#{contactRisk},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCaseTrackContact" parameterType="CaseTrackContact">
+        update case_track_contact
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="caseId != null">case_id = #{caseId},</if>
+            <if test="trackDatetime != null">track_datetime = #{trackDatetime},</if>
+            <if test="trackAddress != null">track_address = #{trackAddress},</if>
+            <if test="trackType != null">track_type = #{trackType},</if>
+            <if test="trackDesc != null">track_desc = #{trackDesc},</if>
+            <if test="contactName != null">contact_name = #{contactName},</if>
+            <if test="contactRelation != null">contact_relation = #{contactRelation},</if>
+            <if test="contactIdcard != null">contact_idcard = #{contactIdcard},</if>
+            <if test="contactPhone != null">contact_phone = #{contactPhone},</if>
+            <if test="contactDatetime != null">contact_datetime = #{contactDatetime},</if>
+            <if test="contactAddress != null">contact_address = #{contactAddress},</if>
+            <if test="contactRisk != null">contact_risk = #{contactRisk},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where track_id = #{trackId}
+    </update>
+
+    <delete id="deleteCaseTrackContactByTrackId" parameterType="Long">
+        delete from case_track_contact where track_id = #{trackId}
+    </delete>
+
+    <delete id="deleteCaseTrackContactByTrackIds" parameterType="String">
+        delete from case_track_contact where track_id in 
+        <foreach item="trackId" collection="array" open="(" separator="," close=")">
+            #{trackId}
+        </foreach>
+    </delete>
+</mapper>
