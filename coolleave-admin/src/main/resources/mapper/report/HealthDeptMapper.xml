@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolleave.report.mapper.HealthDeptMapper">
+    
+    <resultMap type="HealthDept" id="HealthDeptResult">
+        <result property="deptId"    column="dept_id"    />
+        <result property="deptName"    column="dept_name"    />
+        <result property="deptLevel"    column="dept_level"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="district"    column="district"    />
+    </resultMap>
+
+    <sql id="selectHealthDeptVo">
+        select dept_id, dept_name, dept_level, province, city, district from health_dept
+    </sql>
+
+    <select id="selectHealthDeptList" parameterType="HealthDept" resultMap="HealthDeptResult">
+        <include refid="selectHealthDeptVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectHealthDeptByDeptId" parameterType="Long" resultMap="HealthDeptResult">
+        <include refid="selectHealthDeptVo"/>
+        where dept_id = #{deptId}
+    </select>
+
+    <insert id="insertHealthDept" parameterType="HealthDept" useGeneratedKeys="true" keyProperty="deptId">
+        insert into health_dept
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deptName != null">dept_name,</if>
+            <if test="deptLevel != null">dept_level,</if>
+            <if test="province != null">province,</if>
+            <if test="city != null">city,</if>
+            <if test="district != null">district,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deptName != null">#{deptName},</if>
+            <if test="deptLevel != null">#{deptLevel},</if>
+            <if test="province != null">#{province},</if>
+            <if test="city != null">#{city},</if>
+            <if test="district != null">#{district},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHealthDept" parameterType="HealthDept">
+        update health_dept
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deptName != null">dept_name = #{deptName},</if>
+            <if test="deptLevel != null">dept_level = #{deptLevel},</if>
+            <if test="province != null">province = #{province},</if>
+            <if test="city != null">city = #{city},</if>
+            <if test="district != null">district = #{district},</if>
+        </trim>
+        where dept_id = #{deptId}
+    </update>
+
+    <delete id="deleteHealthDeptByDeptId" parameterType="Long">
+        delete from health_dept where dept_id = #{deptId}
+    </delete>
+
+    <delete id="deleteHealthDeptByDeptIds" parameterType="String">
+        delete from health_dept where dept_id in 
+        <foreach item="deptId" collection="array" open="(" separator="," close=")">
+            #{deptId}
+        </foreach>
+    </delete>
+</mapper>

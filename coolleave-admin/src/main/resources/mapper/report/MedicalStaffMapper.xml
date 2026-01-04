@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coolleave.report.mapper.MedicalStaffMapper">
+    
+    <resultMap type="MedicalStaff" id="MedicalStaffResult">
+        <result property="medId"    column="med_id"    />
+        <result property="medName"    column="med_name"    />
+        <result property="medDeptId"    column="med_dept_id"    />
+        <result property="medLicense"    column="med_license"    />
+        <result property="medPhone"    column="med_phone"    />
+    </resultMap>
+
+    <sql id="selectMedicalStaffVo">
+        select med_id, med_name, med_dept_id, med_license, med_phone from medical_staff
+    </sql>
+
+    <select id="selectMedicalStaffList" parameterType="MedicalStaff" resultMap="MedicalStaffResult">
+        <include refid="selectMedicalStaffVo"/>
+        <where>  
+            <if test="medName != null  and medName != ''"> and med_name like concat('%', #{medName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectMedicalStaffByMedId" parameterType="Long" resultMap="MedicalStaffResult">
+        <include refid="selectMedicalStaffVo"/>
+        where med_id = #{medId}
+    </select>
+
+    <insert id="insertMedicalStaff" parameterType="MedicalStaff" useGeneratedKeys="true" keyProperty="medId">
+        insert into medical_staff
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="medName != null and medName != ''">med_name,</if>
+            <if test="medDeptId != null">med_dept_id,</if>
+            <if test="medLicense != null and medLicense != ''">med_license,</if>
+            <if test="medPhone != null">med_phone,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="medName != null and medName != ''">#{medName},</if>
+            <if test="medDeptId != null">#{medDeptId},</if>
+            <if test="medLicense != null and medLicense != ''">#{medLicense},</if>
+            <if test="medPhone != null">#{medPhone},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMedicalStaff" parameterType="MedicalStaff">
+        update medical_staff
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="medName != null and medName != ''">med_name = #{medName},</if>
+            <if test="medDeptId != null">med_dept_id = #{medDeptId},</if>
+            <if test="medLicense != null and medLicense != ''">med_license = #{medLicense},</if>
+            <if test="medPhone != null">med_phone = #{medPhone},</if>
+        </trim>
+        where med_id = #{medId}
+    </update>
+
+    <delete id="deleteMedicalStaffByMedId" parameterType="Long">
+        delete from medical_staff where med_id = #{medId}
+    </delete>
+
+    <delete id="deleteMedicalStaffByMedIds" parameterType="String">
+        delete from medical_staff where med_id in 
+        <foreach item="medId" collection="array" open="(" separator="," close=")">
+            #{medId}
+        </foreach>
+    </delete>
+</mapper>
