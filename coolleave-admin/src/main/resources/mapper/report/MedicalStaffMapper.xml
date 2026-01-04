@@ -8,12 +8,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="medId"    column="med_id"    />
         <result property="medName"    column="med_name"    />
         <result property="medDeptId"    column="med_dept_id"    />
+        <result property="medDeptName" column="dept_name"/>
         <result property="medLicense"    column="med_license"    />
         <result property="medPhone"    column="med_phone"    />
     </resultMap>
 
     <sql id="selectMedicalStaffVo">
-        select med_id, med_name, med_dept_id, med_license, med_phone from medical_staff
+        select med_id, med_name, med_dept_id,health_dept.dept_name, med_license, med_phone from medical_staff
+        left join health_dept
+        on medical_staff.med_dept_id = health_dept.dept_id
     </sql>
 
     <select id="selectMedicalStaffList" parameterType="MedicalStaff" resultMap="MedicalStaffResult">

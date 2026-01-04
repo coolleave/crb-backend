@@ -2,6 +2,8 @@ package com.coolleave.report.mapper;
 
 import java.util.List;
 import com.coolleave.report.domain.CaseVerifyInvestigate;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * 上报数据核实诊断与调查处理Mapper接口
@@ -58,4 +60,7 @@ public interface CaseVerifyInvestigateMapper
      * @return 结果
      */
     public int deleteCaseVerifyInvestigateByVerifyIds(Long[] verifyIds);
+
+    @Update("UPDATE case_base SET case_status = #{caseVerifyInvestigate.verifyResult} WHERE case_code = #{caseVerifyInvestigate.caseId}")
+    void updateBaseVerifyStatus(@Param("caseVerifyInvestigate") CaseVerifyInvestigate caseVerifyInvestigate);
 }

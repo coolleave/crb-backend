@@ -28,6 +28,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where dept_id = #{deptId}
     </select>
 
+    <select id="selectEmployeeCountByDeptIds" resultType="java.lang.Integer">
+        select count(med_id) from medical_staff
+        where med_dept_id in
+        <foreach item="deptId" collection="array" open="(" separator="," close=")">
+            #{deptId}
+        </foreach>
+    </select>
+
     <insert id="insertHealthDept" parameterType="HealthDept" useGeneratedKeys="true" keyProperty="deptId">
         insert into health_dept
         <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -26,8 +26,10 @@ public class CaseBase extends BaseEntity
     private String caseCode;
 
     /** 传染病 */
-    @Excel(name = "传染病")
     private Long infectId;
+
+    @Excel(name="传染病名称")
+    private String infectName;
 
     /** 上报类型 */
     @Excel(name = "上报类型")
@@ -83,9 +85,31 @@ public class CaseBase extends BaseEntity
     @Excel(name = "上报医务人员")
     private Long reporterId;
 
+    @Excel(name="上报医务人员名称")
+    private String reporterName;
+
     /** 上报机构 */
     @Excel(name = "上报机构")
     private Long reportDeptId;
+
+    public String getReporterName() {
+        return reporterName;
+    }
+
+    public void setReporterName(String reporterName) {
+        this.reporterName = reporterName;
+    }
+
+    public String getReportDeptName() {
+        return reportDeptName;
+    }
+
+    public void setReportDeptName(String reportDeptName) {
+        this.reportDeptName = reportDeptName;
+    }
+
+    @Excel(name = "上报机构名称")
+    private String reportDeptName;
 
     /** 核实状态 */
     @Excel(name = "核实状态")
@@ -124,7 +148,15 @@ public class CaseBase extends BaseEntity
         this.infectId = infectId;
     }
 
-    public Long getInfectId() 
+    public String getInfectName() {
+        return infectName;
+    }
+
+    public void setInfectName(String infectName) {
+        this.infectName = infectName;
+    }
+
+    public Long getInfectId()
     {
         return infectId;
     }

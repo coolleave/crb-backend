@@ -27,6 +27,9 @@ public class MedicalStaff extends BaseEntity
     @Excel(name = "所属机构ID")
     private Long medDeptId;
 
+    @Excel(name = "所属机构名称")
+    private String medDeptName;
+
     /** 医师资格证号（15位固定） */
     @Excel(name = "医师资格证号", readConverterExp = "1=5位固定")
     private String medLicense;
@@ -83,6 +86,15 @@ public class MedicalStaff extends BaseEntity
     public String getMedPhone() 
     {
         return medPhone;
+    }
+
+    public void setMedDeptName(String medDeptName)
+    {
+        this.medDeptName = medDeptName;
+    }
+    public String getMedDeptName()
+    {
+        return medDeptName;
     }
 
     @Override

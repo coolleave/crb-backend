@@ -58,4 +58,6 @@ public interface HealthDeptMapper
      * @return 结果
      */
     public int deleteHealthDeptByDeptIds(Long[] deptIds);
+
+    int selectEmployeeCountByDeptIds(Long[] deptIds);
 }

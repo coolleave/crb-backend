@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.coolleave.report.mapper.CaseVerifyInvestigateMapper;
 import com.coolleave.report.domain.CaseVerifyInvestigate;
 import com.coolleave.report.service.ICaseVerifyInvestigateService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 上报数据核实诊断与调查处理Service业务层处理
@@ -51,9 +52,12 @@ public class CaseVerifyInvestigateServiceImpl implements ICaseVerifyInvestigateS
      * @return 结果
      */
     @Override
+    @Transactional
     public int insertCaseVerifyInvestigate(CaseVerifyInvestigate caseVerifyInvestigate)
     {
         caseVerifyInvestigate.setCreateTime(DateUtils.getNowDate());
+        // 新增时同步修改基础信息状态
+        caseVerifyInvestigateMapper.updateBaseVerifyStatus(caseVerifyInvestigate);
         return caseVerifyInvestigateMapper.insertCaseVerifyInvestigate(caseVerifyInvestigate);
     }
 
@@ -64,9 +68,13 @@ public class CaseVerifyInvestigateServiceImpl implements ICaseVerifyInvestigateS
      * @return 结果
      */
     @Override
+    @Transactional
     public int updateCaseVerifyInvestigate(CaseVerifyInvestigate caseVerifyInvestigate)
     {
+        // 修改基础信息状态
+
         caseVerifyInvestigate.setUpdateTime(DateUtils.getNowDate());
+        caseVerifyInvestigateMapper.updateBaseVerifyStatus(caseVerifyInvestigate);
         return caseVerifyInvestigateMapper.updateCaseVerifyInvestigate(caseVerifyInvestigate);
     }
 

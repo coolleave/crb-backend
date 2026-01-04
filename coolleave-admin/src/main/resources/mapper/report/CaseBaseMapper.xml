@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="caseId"    column="case_id"    />
         <result property="caseCode"    column="case_code"    />
         <result property="infectId"    column="infect_id"    />
+        <result property="infectName"  column="infect_name" />
         <result property="reportType"    column="report_type"    />
         <result property="patientName"    column="patient_name"    />
         <result property="patientGender"    column="patient_gender"    />
@@ -21,7 +22,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="onsetDatetime"    column="onset_datetime"    />
         <result property="reportDatetime"    column="report_datetime"    />
         <result property="reporterId"    column="reporter_id"    />
+        <result property="reporterName"  column="med_name"/>
         <result property="reportDeptId"    column="report_dept_id"    />
+        <result property="reportDeptName"  column="dept_name"/>
         <result property="caseStatus"    column="case_status"    />
         <result property="hospitalWard"    column="hospital_ward"    />
         <result property="hospitalBed"    column="hospital_bed"    />
@@ -30,7 +33,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectCaseBaseVo">
-        select case_id, case_code, infect_id, report_type, patient_name, patient_gender, patient_age, patient_idcard, patient_phone, province, city, district, detail_address, onset_datetime, report_datetime, reporter_id, report_dept_id, case_status, hospital_ward, hospital_bed, create_time, update_time from case_base
+        select case_id, case_code, case_base.infect_id,infect_name, report_type, patient_name, patient_gender, patient_age, patient_idcard, patient_phone, case_base.province, case_base.city, case_base.district, detail_address, onset_datetime, report_datetime, reporter_id, medical_staff.med_name,report_dept_id, health_dept.dept_name,case_status, hospital_ward, hospital_bed, create_time, update_time from case_base
+        left join infect_info
+        on case_base.infect_id=infect_info.infect_id
+        left join health_dept
+        on case_base.report_dept_id = health_dept.dept_id
+        left join medical_staff
+        on case_base.reporter_id = medical_staff.med_id
     </sql>
 
     <select id="selectCaseBaseList" parameterType="CaseBase" resultMap="CaseBaseResult">
@@ -48,8 +57,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="city != null  and city != ''"> and city = #{city}</if>
             <if test="district != null  and district != ''"> and district = #{district}</if>
             <if test="detailAddress != null  and detailAddress != ''"> and detail_address = #{detailAddress}</if>
-            <if test="onsetDatetime != null "> and onset_datetime = #{onsetDatetime}</if>
-            <if test="reportDatetime != null "> and report_datetime = #{reportDatetime}</if>
+            <if test="onsetDatetime != null ">
+                and onset_datetime &gt;= #{onsetDatetime}
+                and onset_datetime &lt; date_add(#{onsetDatetime}, interval 1 day)
+            </if>
+            <if test="reportDatetime != null ">
+                and report_datetime &gt;= #{reportDatetime}
+                and report_datetime &lt; date_add(#{reportDatetime}, interval 1 day)
+            </if>
+
             <if test="reporterId != null "> and reporter_id = #{reporterId}</if>
             <if test="reportDeptId != null "> and report_dept_id = #{reportDeptId}</if>
             <if test="caseStatus != null "> and case_status = #{caseStatus}</if>

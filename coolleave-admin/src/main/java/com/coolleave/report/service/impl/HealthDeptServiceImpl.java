@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.coolleave.report.mapper.HealthDeptMapper;
 import com.coolleave.report.domain.HealthDept;
 import com.coolleave.report.service.IHealthDeptService;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 卫生机构/部门信息Service业务层处理
@@ -76,7 +77,13 @@ public class HealthDeptServiceImpl implements IHealthDeptService
     @Override
     public int deleteHealthDeptByDeptIds(Long[] deptIds)
     {
-        return healthDeptMapper.deleteHealthDeptByDeptIds(deptIds);
+        // 查询是否有关联的员工
+        int count = healthDeptMapper.selectEmployeeCountByDeptIds(deptIds);
+        if (count > 0)
+        {
+            throw new RuntimeException("所选部门存在关联的员工，无法删除！");
+        }
+        return  healthDeptMapper.deleteHealthDeptByDeptIds(deptIds);
     }
 
     /**
