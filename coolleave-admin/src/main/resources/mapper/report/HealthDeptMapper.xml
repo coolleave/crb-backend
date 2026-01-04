@@ -19,18 +19,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectHealthDeptList" parameterType="HealthDept" resultMap="HealthDeptResult">
         <include refid="selectHealthDeptVo"/>
-        <where>  
+        <where>
+            del_flag = 0
         </where>
     </select>
     
     <select id="selectHealthDeptByDeptId" parameterType="Long" resultMap="HealthDeptResult">
         <include refid="selectHealthDeptVo"/>
-        where dept_id = #{deptId}
+        where dept_id = #{deptId} and del_flag = 0
     </select>
 
     <select id="selectEmployeeCountByDeptIds" resultType="java.lang.Integer">
         select count(med_id) from medical_staff
-        where med_dept_id in
+        where
+        medical_staff.del_flag = 0
+        and med_dept_id in
         <foreach item="deptId" collection="array" open="(" separator="," close=")">
             #{deptId}
         </foreach>
@@ -66,14 +69,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where dept_id = #{deptId}
     </update>
 
-    <delete id="deleteHealthDeptByDeptId" parameterType="Long">
-        delete from health_dept where dept_id = #{deptId}
-    </delete>
+    <update id="deleteHealthDeptByDeptId" parameterType="Long">
+        update  health_dept  set del_flag = 1 where dept_id = #{deptId}
+    </update>
 
-    <delete id="deleteHealthDeptByDeptIds" parameterType="String">
-        delete from health_dept where dept_id in 
+    <update id="deleteHealthDeptByDeptIds" parameterType="String">
+        update  health_dept set health_dept.del_flag = 1
+        where dept_id in
         <foreach item="deptId" collection="array" open="(" separator="," close=")">
             #{deptId}
         </foreach>
-    </delete>
+    </update>
 </mapper>

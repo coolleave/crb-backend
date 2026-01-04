@@ -21,7 +21,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectMedicalStaffList" parameterType="MedicalStaff" resultMap="MedicalStaffResult">
         <include refid="selectMedicalStaffVo"/>
-        <where>  
+        <where>
+            medical_staff.del_flag = 0
+            <!-- 原有姓名模糊查询条件 -->
             <if test="medName != null  and medName != ''"> and med_name like concat('%', #{medName}, '%')</if>
         </where>
     </select>
@@ -58,14 +60,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where med_id = #{medId}
     </update>
 
-    <delete id="deleteMedicalStaffByMedId" parameterType="Long">
-        delete from medical_staff where med_id = #{medId}
-    </delete>
+    <update id="deleteMedicalStaffByMedId" parameterType="Long">
+        update medical_staff
+        set del_flag = 1
+        where med_id = #{medId}
+    </update>
 
-    <delete id="deleteMedicalStaffByMedIds" parameterType="String">
-        delete from medical_staff where med_id in 
+    <update id="deleteMedicalStaffByMedIds" parameterType="String">
+        update medical_staff
+        set del_flag = 1
+        where med_id in
         <foreach item="medId" collection="array" open="(" separator="," close=")">
             #{medId}
         </foreach>
-    </delete>
+    </update>
 </mapper>
